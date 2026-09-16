@@ -1,929 +1,565 @@
-# Student-Management-System
-1. index.html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Student Management System</title>
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header class="topbar">
-    <div>
-        <h1>Student Management System</h1>
-        <p>Manage student records efficiently</p>
-    </div>
-</header>
-
-<main class="container">
-
-    <!-- Dashboard -->
-    <section class="dashboard">
-
-        <div class="stat-card">
-            <span>Total Students</span>
-            <strong id="totalStudents">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>AI & Data Science</span>
-            <strong id="aidsCount">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>Computer Science</span>
-            <strong id="cseCount">0</strong>
-        </div>
-
-        <div class="stat-card">
-            <span>Other Departments</span>
-            <strong id="otherCount">0</strong>
-        </div>
-
-    </section>
-
-    <!-- Student Form -->
-    <section class="card">
-
-        <div class="section-header">
-            <div>
-                <h2 id="formTitle">Add Student</h2>
-                <p>Enter student information below</p>
-            </div>
-        </div>
-
-        <form id="studentForm">
-
-            <input type="hidden" id="editIndex">
-
-            <div class="form-grid">
-
-                <div class="form-group">
-                    <label for="studentId">Student ID</label>
-                    <input
-                        type="text"
-                        id="studentId"
-                        placeholder="STU001"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter full name"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="student@example.com"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="9876543210"
-                        pattern="[0-9]{10}"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="department">Department</label>
-                    <select id="department" required>
-                        <option value="">Select department</option>
-                        <option value="AI & Data Science">
-                            AI & Data Science
-                        </option>
-                        <option value="Computer Science">
-                            Computer Science
-                        </option>
-                        <option value="Information Technology">
-                            Information Technology
-                        </option>
-                        <option value="Electronics">
-                            Electronics
-                        </option>
-                        <option value="Mechanical">
-                            Mechanical
-                        </option>
-                        <option value="Civil">
-                            Civil
-                        </option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="year">Year</label>
-                    <select id="year" required>
-                        <option value="">Select year</option>
-                        <option value="1">1st Year</option>
-                        <option value="2">2nd Year</option>
-                        <option value="3">3rd Year</option>
-                        <option value="4">4th Year</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender" required>
-                        <option value="">Select gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="dob">Date of Birth</label>
-                    <input
-                        type="date"
-                        id="dob"
-                        required
-                    >
-                </div>
-
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn primary">
-                    <span id="submitText">Add Student</span>
-                </button>
-
-                <button
-                    type="button"
-                    class="btn secondary"
-                    id="cancelBtn"
-                    onclick="resetForm()"
-                >
-                    Cancel
-                </button>
-            </div>
-
-        </form>
-
-    </section>
-
-    <!-- Student Records -->
-    <section class="card">
-
-        <div class="section-header records-header">
-
-            <div>
-                <h2>Student Records</h2>
-                <p>View and manage registered students</p>
-            </div>
-
-            <div class="filters">
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search students..."
-                >
-
-                <select id="filterDepartment">
-                    <option value="">All Departments</option>
-                    <option value="AI & Data Science">
-                        AI & Data Science
-                    </option>
-                    <option value="Computer Science">
-                        Computer Science
-                    </option>
-                    <option value="Information Technology">
-                        Information Technology
-                    </option>
-                    <option value="Electronics">
-                        Electronics
-                    </option>
-                    <option value="Mechanical">
-                        Mechanical
-                    </option>
-                    <option value="Civil">
-                        Civil
-                    </option>
-                </select>
-
-            </div>
-
-        </div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Department</th>
-                        <th>Year</th>
-                        <th>Gender</th>
-                        <th>DOB</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody id="studentTableBody">
-                </tbody>
-
-            </table>
-
-            <div id="emptyMessage" class="empty-message">
-                No student records found.
-            </div>
-
-        </div>
-
-    </section>
-
-</main>
-
-<div id="toast" class="toast"></div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
-
-
-2. style.css
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
-    color: #1f2937;
-}
-
-/* Topbar */
-
-.topbar {
-    background: #111827;
-    color: white;
-    padding: 25px 7%;
-}
-
-.topbar h1 {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
-
-.topbar p {
-    color: #cbd5e1;
-}
-
-/* Main container */
-
-.container {
-    width: 86%;
-    max-width: 1500px;
-    margin: 30px auto;
-}
-
-/* Dashboard */
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-}
-
-.stat-card span {
-    display: block;
-    color: #64748b;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.stat-card strong {
-    font-size: 30px;
-}
-
-/* Cards */
-
-.card {
-    background: white;
-    border-radius: 14px;
-    padding: 28px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-}
-
-.section-header {
-    margin-bottom: 25px;
-}
-
-.section-header h2 {
-    margin-bottom: 5px;
-}
-
-.section-header p {
-    color: #64748b;
-}
-
-/* Form */
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-group label {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.form-group input,
-.form-group select,
-.filters input,
-.filters select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-    outline: none;
-    background: white;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.filters input:focus,
-.filters select:focus {
-    border-color: #2563eb;
-}
-
-/* Buttons */
-
-.form-actions {
-    margin-top: 25px;
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.primary {
-    background: #2563eb;
-    color: white;
-}
-
-.secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-/* Records header */
-
-.records-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: center;
-}
-
-.filters {
-    display: flex;
-    gap: 10px;
-}
-
-.filters input {
-    min-width: 230px;
-}
-
-/* Table */
-
-.table-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-thead {
-    background: #f8fafc;
-}
-
-th,
-td {
-    text-align: left;
-    padding: 14px;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 13px;
-    white-space: nowrap;
-}
-
-th {
-    font-weight: 700;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 6px;
-}
-
-.edit-btn,
-.delete-btn {
-    border: none;
-    padding: 7px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.edit-btn {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.delete-btn {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.empty-message {
-    text-align: center;
-    padding: 30px;
-    color: #64748b;
-}
-
-/* Toast */
-
-.toast {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    background: #111827;
-    color: white;
-    padding: 14px 20px;
-    border-radius: 8px;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-}
-
-.toast.show {
-    opacity: 1;
-}
-
-/* Responsive */
-
-@media (max-width: 1000px) {
-
-    .dashboard {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .records-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .filters {
-        width: 100%;
-    }
-
-    .filters input,
-    .filters select {
-        flex: 1;
-        min-width: 0;
-    }
-}
-
-@media (max-width: 700px) {
-
-    .container {
-        width: 94%;
-    }
-
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .filters {
-        flex-direction: column;
-    }
-
-    .topbar {
-        padding: 20px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-}
-
-
-3. script.js
-
-let students = JSON.parse(localStorage.getItem("students")) || [];
-
-const studentForm = document.getElementById("studentForm");
-const studentTableBody = document.getElementById("studentTableBody");
-const emptyMessage = document.getElementById("emptyMessage");
-
-const searchInput = document.getElementById("searchInput");
-const filterDepartment = document.getElementById("filterDepartment");
-
-const totalStudents = document.getElementById("totalStudents");
-const aidsCount = document.getElementById("aidsCount");
-const cseCount = document.getElementById("cseCount");
-const otherCount = document.getElementById("otherCount");
-
-const formTitle = document.getElementById("formTitle");
-const submitText = document.getElementById("submitText");
-const editIndex = document.getElementById("editIndex");
-
-const studentIdInput = document.getElementById("studentId");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
-const phoneInput = document.getElementById("phone");
-const departmentInput = document.getElementById("department");
-const yearInput = document.getElementById("year");
-const genderInput = document.getElementById("gender");
-const dobInput = document.getElementById("dob");
-
-
-/* ================================
-   FORM SUBMISSION
-================================ */
-
-studentForm.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-    const student = {
-        studentId: studentIdInput.value.trim(),
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim(),
-        phone: phoneInput.value.trim(),
-        department: departmentInput.value,
-        year: yearInput.value,
-        gender: genderInput.value,
-        dob: dobInput.value
-    };
-
-    // Validation
-
-    if (
-        !student.studentId ||
-        !student.name ||
-        !student.email ||
-        !student.phone ||
-        !student.department ||
-        !student.year ||
-        !student.gender ||
-        !student.dob
-    ) {
-        showToast("Please fill all fields.");
-        return;
-    }
-
-    if (!/^[0-9]{10}$/.test(student.phone)) {
-        showToast("Phone number must contain 10 digits.");
-        return;
-    }
-
-    if (editIndex.value === "") {
-
-        // Duplicate Student ID
-
-        const duplicate = students.some(
-            item => item.studentId.toLowerCase() === student.studentId.toLowerCase()
-        );
-
-        if (duplicate) {
-            showToast("Student ID already exists.");
-            return;
-        }
-
-        students.push(student);
-
-        showToast("Student added successfully.");
-
-    } else {
-
-        const index = Number(editIndex.value);
-
-        students[index] = student;
-
-        showToast("Student updated successfully.");
-    }
-
-    saveStudents();
-
-    renderStudents();
-
-    resetForm();
-});
-
-
-/* ================================
-   SAVE DATA
-================================ */
-
-function saveStudents() {
-
-    localStorage.setItem(
-        "students",
-        JSON.stringify(students)
-    );
-}
-
-
-/* ================================
-   DISPLAY STUDENTS
-================================ */
-
-function renderStudents() {
-
-    const searchValue =
-        searchInput.value.toLowerCase().trim();
-
-    const departmentValue =
-        filterDepartment.value;
-
-    const filteredStudents = students.filter(student => {
-
-        const matchesSearch =
-            student.studentId.toLowerCase().includes(searchValue) ||
-            student.name.toLowerCase().includes(searchValue) ||
-            student.email.toLowerCase().includes(searchValue);
-
-        const matchesDepartment =
-            departmentValue === "" ||
-            student.department === departmentValue;
-
-        return matchesSearch && matchesDepartment;
-    });
-
-    studentTableBody.innerHTML = "";
-
-    if (filteredStudents.length === 0) {
-
-        emptyMessage.style.display = "block";
-
-    } else {
-
-        emptyMessage.style.display = "none";
-
-        filteredStudents.forEach(student => {
-
-            const originalIndex =
-                students.indexOf(student);
-
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${escapeHTML(student.studentId)}</td>
-                <td>${escapeHTML(student.name)}</td>
-                <td>${escapeHTML(student.email)}</td>
-                <td>${escapeHTML(student.phone)}</td>
-                <td>${escapeHTML(student.department)}</td>
-                <td>${escapeHTML(student.year)}</td>
-                <td>${escapeHTML(student.gender)}</td>
-                <td>${escapeHTML(student.dob)}</td>
-
-                <td>
-                    <div class="action-buttons">
-
-                        <button
-                            class="edit-btn"
-                            onclick="editStudent(${originalIndex})"
-                        >
-                            Edit
-                        </button>
-
-                        <button
-                            class="delete-btn"
-                            onclick="deleteStudent(${originalIndex})"
-                        >
-                            Delete
-                        </button>
-
-                    </div>
-                </td>
-            `;
-
-            studentTableBody.appendChild(row);
-        });
-    }
-
-    updateDashboard();
-}
-
-
-/* ================================
-   EDIT STUDENT
-================================ */
-
-function editStudent(index) {
-
-    const student = students[index];
-
-    studentIdInput.value = student.studentId;
-    nameInput.value = student.name;
-    emailInput.value = student.email;
-    phoneInput.value = student.phone;
-    departmentInput.value = student.department;
-    yearInput.value = student.year;
-    genderInput.value = student.gender;
-    dobInput.value = student.dob;
-
-    editIndex.value = index;
-
-    formTitle.textContent = "Edit Student";
-    submitText.textContent = "Update Student";
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-
-/* ================================
-   DELETE STUDENT
-================================ */
-
-function deleteStudent(index) {
-
-    const student = students[index];
-
-    const confirmation = confirm(
-        `Are you sure you want to delete ${student.name}?`
-    );
-
-    if (!confirmation) {
-        return;
-    }
-
-    students.splice(index, 1);
-
-    saveStudents();
-
-    renderStudents();
-
-    showToast("Student deleted successfully.");
-}
-
-
-/* ================================
-   RESET FORM
-================================ */
-
-function resetForm() {
-
-    studentForm.reset();
-
-    editIndex.value = "";
-
-    formTitle.textContent = "Add Student";
-
-    submitText.textContent = "Add Student";
-}
-
-
-/* ================================
-   SEARCH
-================================ */
-
-searchInput.addEventListener(
-    "input",
-    renderStudents
-);
-
-
-/* ================================
-   FILTER
-================================ */
-
-filterDepartment.addEventListener(
-    "change",
-    renderStudents
-);
-
-
-/* ================================
-   DASHBOARD
-================================ */
-
-function updateDashboard() {
-
-    totalStudents.textContent = students.length;
-
-    const aids = students.filter(
-        student =>
-            student.department === "AI & Data Science"
-    ).length;
-
-    const cse = students.filter(
-        student =>
-            student.department === "Computer Science"
-    ).length;
-
-    const other =
-        students.length - aids - cse;
-
-    aidsCount.textContent = aids;
-    cseCount.textContent = cse;
-    otherCount.textContent = other;
-}
-
-
-/* ================================
-   TOAST MESSAGE
-================================ */
-
-function showToast(message) {
-
-    const toast = document.getElementById("toast");
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 2500);
-}
-
-
-/* ================================
-   BASIC HTML ESCAPING
-================================ */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* ================================
-   INITIAL LOAD
-================================ */
-
-renderStudents();
+# Student Management System
+
+A full-stack web application for managing student records with complete **Create, Read, Update, and Delete (CRUD)** functionality.
+
+The system provides a user-friendly interface for adding, viewing, updating, deleting, searching, and managing student information while maintaining persistent data through a backend database.
+
+---
+
+## 📌 Project Overview
+
+The **Student Management System** is designed to simplify the management of student records in an educational environment.
+
+The application allows authorized users to maintain student information such as:
+
+* Student ID
+* Student Name
+* Email
+* Phone Number
+* Department
+* Year
+* Gender
+* Date of Birth
 
+The project follows a full-stack architecture consisting of a frontend, REST API backend, and database.
+
+---
+
+## 🎯 Objectives
+
+The main objectives of this project are:
+
+1. To develop a functional student record management system.
+2. To implement complete CRUD operations.
+3. To provide a responsive and easy-to-use user interface.
+4. To connect the frontend with a REST API backend.
+5. To store student information in a database.
+6. To implement client-side and server-side validation.
+7. To provide search and filtering functionality.
+8. To test the application's API and user interface.
+9. To maintain the project using Git and GitHub.
+10. To demonstrate a complete working full-stack application.
+
+---
+
+## ✨ Features
+
+### Student Management
+
+* Add new student records
+* View all student records
+* View individual student information
+* Edit existing student records
+* Delete student records
+* Search students
+* Filter student records
+* Form validation
+* Error and success messages
+
+### CRUD Operations
+
+| Operation | Description                         |
+| --------- | ----------------------------------- |
+| Create    | Add a new student                   |
+| Read      | Display stored student records      |
+| Update    | Modify existing student information |
+| Delete    | Remove a student record             |
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                   ┌─────────────────────┐
+                   │       User          │
+                   └──────────┬──────────┘
+                              │
+                              ▼
+                   ┌─────────────────────┐
+                   │      Frontend       │
+                   │ HTML / CSS / JS     │
+                   └──────────┬──────────┘
+                              │
+                         HTTP / JSON
+                              │
+                              ▼
+                   ┌─────────────────────┐
+                   │     REST API        │
+                   │ Django / DRF        │
+                   └──────────┬──────────┘
+                              │
+                              ▼
+                   ┌─────────────────────┐
+                   │      Database       │
+                   │       SQLite        │
+                   └─────────────────────┘
+```
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+### Backend
+
+* Python
+* Django
+* Django REST Framework
+
+### Database
+
+* SQLite
+
+### API Testing
+
+* Postman
+
+### Version Control
+
+* Git
+* GitHub
+
+The selected technologies follow the technology categories specified in the project SOP.
+
+---
+
+## 📂 Project Structure
+
+```text
+student-management-system/
+│
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── app.js
+│   └── assets/
+│
+├── backend/
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── config/
+│   └── students/
+│       ├── models.py
+│       ├── serializers.py
+│       ├── views.py
+│       ├── urls.py
+│       ├── admin.py
+│       └── tests.py
+│
+├── database/
+│   └── README.md
+│
+├── tests/
+│   ├── api-tests/
+│   └── screenshots/
+│
+├── docs/
+│   ├── PROJECT_REPORT.md
+│   ├── API_DOCUMENTATION.md
+│   ├── DATABASE.md
+│   ├── TESTING.md
+│   └── ARCHITECTURE.md
+│
+├── .gitignore
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🗄️ Student Data Model
+
+Each student record contains the following information:
+
+| Field         | Type    | Description               |
+| ------------- | ------- | ------------------------- |
+| Student ID    | String  | Unique student identifier |
+| Name          | String  | Student's full name       |
+| Email         | String  | Student email address     |
+| Phone         | String  | Student contact number    |
+| Department    | String  | Student department        |
+| Year          | Integer | Current academic year     |
+| Gender        | String  | Student gender            |
+| Date of Birth | Date    | Student date of birth     |
+
+Appropriate database constraints should be applied to required and unique fields.
+
+---
+
+## 🔗 REST API
+
+The backend exposes REST API endpoints for student management.
+
+| Operation        | HTTP Method | Endpoint              |
+| ---------------- | ----------- | --------------------- |
+| Create Student   | POST        | `/api/students/`      |
+| Get All Students | GET         | `/api/students/`      |
+| Get Student      | GET         | `/api/students/{id}/` |
+| Update Student   | PUT/PATCH   | `/api/students/{id}/` |
+| Delete Student   | DELETE      | `/api/students/{id}/` |
+
+The API follows the CRUD endpoint pattern specified in the SOP.
+
+---
+
+## ✅ Validation
+
+The application implements validation for student data.
+
+Examples include:
+
+* Required fields cannot be empty.
+* Email addresses must use a valid format.
+* Numeric fields must contain appropriate values.
+* Duplicate unique values are handled.
+* Invalid record IDs are handled.
+* Server-side validation is applied in addition to client-side validation.
+* Clear error messages are displayed.
+
+These validation requirements are included in the project SOP.
+
+---
+
+## 🔍 Search and Filtering
+
+The system provides search functionality to help users locate student records quickly.
+
+Users can search or filter records based on available student information such as:
+
+* Student ID
+* Name
+* Department
+* Year
+* Email
+
+---
+
+## 🚀 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR-USERNAME/student-management-system.git
+```
+
+### 2. Open the project
+
+```bash
+cd student-management-system
+```
+
+### 3. Create a Python virtual environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the virtual environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+### 5. Install backend dependencies
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+### 6. Apply database migrations
+
+```bash
+python manage.py migrate
+```
+
+### 7. Start the backend server
+
+```bash
+python manage.py runserver
+```
+
+The backend will normally be available at:
+
+```text
+http://127.0.0.1:8000/
+```
+
+### 8. Start the frontend
+
+Open the frontend according to the project's configured frontend setup.
+
+For a simple HTML/CSS/JavaScript frontend, open:
+
+```text
+frontend/index.html
+```
+
+or serve the frontend using a local development server.
+
+---
+
+## 🧪 Testing
+
+The application should be tested at both API and frontend levels.
+
+### API Testing
+
+Postman can be used to test:
+
+* Create student
+* Read all students
+* Read individual student
+* Update student
+* Delete student
+* Invalid requests
+* Missing data
+* Duplicate values
+* Invalid IDs
+
+### Functional Testing
+
+| Test Case            | Expected Result             |
+| -------------------- | --------------------------- |
+| Add valid student    | Student is created          |
+| Submit empty form    | Validation error            |
+| Submit invalid email | Validation error            |
+| View students        | Records are displayed       |
+| Edit student         | Information is updated      |
+| Delete student       | Record is removed           |
+| Search student       | Matching records displayed  |
+| Invalid student ID   | Appropriate error displayed |
+
+The SOP requires testing valid, missing, duplicate, and invalid data as well as verification of database values.
+
+---
+
+## 🔐 Security and Quality
+
+The project follows basic security and quality practices:
+
+* Do not hard-code passwords or API keys.
+* Use environment variables for sensitive configuration.
+* Validate user input.
+* Use ORM/database operations safely.
+* Keep frontend, backend, and database responsibilities separated.
+* Use meaningful names for variables, functions, classes, and API endpoints.
+* Do not commit secrets or unnecessary build files.
+
+These practices are specified in the project SOP.
+
+---
+
+## 🌿 Git Workflow
+
+Recommended development workflow:
+
+```bash
+git status
+git add .
+git commit -m "Initial project setup"
+git push
+```
+
+Make meaningful commits throughout development.
+
+Example commit messages:
+
+```text
+Initial project setup
+Create student database model
+Implement student REST API
+Add student creation form
+Implement CRUD operations
+Add validation
+Add search functionality
+Add API testing
+Update documentation
+Prepare final submission
+```
+
+The SOP requires regular meaningful commits and a README containing setup and execution instructions.
+
+---
+
+## 📚 Documentation
+
+Project documentation will include:
+
+* Project overview
+* Problem statement
+* Objectives
+* Technology stack
+* System architecture
+* Database/ER diagram
+* UI screenshots
+* API documentation
+* CRUD implementation
+* Testing results
+* Installation instructions
+* Challenges and solutions
+* Future enhancements
+* GitHub repository details
+
+These correspond to the required project documentation items in the SOP.
+
+---
+
+## 🖥️ Screenshots
+
+Add screenshots of the completed application here.
+
+Recommended screenshots:
+
+```text
+docs/screenshots/
+├── dashboard.png
+├── add-student.png
+├── student-list.png
+├── edit-student.png
+├── delete-student.png
+├── search.png
+├── validation.png
+└── postman-api.png
+```
+
+---
+
+## 🎓 Project Demonstration
+
+During the final demonstration, the following workflow should be shown:
+
+```text
+1. Start the application
+2. Show the dashboard
+3. Add a student
+4. Show the new student
+5. Search for the student
+6. Edit the student's information
+7. Show the updated information
+8. Delete the student
+9. Demonstrate validation
+10. Demonstrate REST API requests
+11. Show the database
+12. Explain the project architecture
+```
+
+The final demonstration checklist requires the application to start correctly, the database connection to work, all four CRUD operations to function, validation to work, and the student to be able to explain the architecture and code flow.
+
+---
+
+## 🚧 Challenges and Solutions
+
+This section should be updated during development.
+
+Example:
+
+| Challenge                             | Solution                                     |
+| ------------------------------------- | -------------------------------------------- |
+| Frontend could not connect to backend | Checked API URL and CORS configuration       |
+| Database migration error              | Recreated migrations and applied them        |
+| Invalid form data                     | Added client-side and server-side validation |
+| API returned incorrect response       | Debugged serializer and view logic           |
+
+---
+
+## 🔮 Future Enhancements
+
+Possible future improvements include:
+
+* User authentication
+* Role-based access
+* Student attendance management
+* Marks management
+* Course management
+* Profile photo upload
+* Export student records
+* Dashboard analytics
+* Email notifications
+* Advanced filtering
+* Deployment to a cloud platform
+
+---
+
+## 📈 Learning Outcomes
+
+By completing this project, the student should gain practical experience in:
+
+* Full-stack web application architecture
+* Frontend development
+* REST API development
+* Database operations
+* CRUD implementation
+* Validation
+* Testing and debugging
+* Git and GitHub
+* Project documentation
+* Software project demonstration
+
+These outcomes align with the stated learning outcomes of the SOP.
+
+---
+
+## 👨‍💻 Author
+
+**Akhil M**
+
+Student Management System
+Academic Full-Stack Web Application Project
+
+---
+
+## 📄 License
+
+This project is developed for academic and educational purposes.
+
+Add an appropriate license here when the final repository license is selected.
+
+---
+
+## ✅ Project Completion Checklist
+
+* [ ] Requirement analysis completed
+* [ ] Project structure created
+* [ ] Frontend completed
+* [ ] Backend completed
+* [ ] Database configured
+* [ ] Create operation completed
+* [ ] Read operation completed
+* [ ] Update operation completed
+* [ ] Delete operation completed
+* [ ] Validation implemented
+* [ ] Search/filter implemented
+* [ ] REST API tested
+* [ ] Frontend tested
+* [ ] Database verified
+* [ ] Screenshots captured
+* [ ] Project report completed
+* [ ] API documentation completed
+* [ ] README completed
+* [ ] Git repository created
+* [ ] Meaningful commits created
+* [ ] Final code pushed to GitHub
+* [ ] Final demonstration completed
+* [ ] Submission package prepared
+
+---
+
+## 🏁 Completion Criteria
+
+The project is considered complete when all four CRUD operations are implemented and demonstrated, frontend-backend-database communication works reliably, validation and testing are completed, documentation is prepared, the source code is submitted through the Git repository, and the major components and workflow can be explained.
